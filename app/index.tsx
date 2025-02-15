@@ -1,4 +1,4 @@
-import {StyleSheet,TextInput,Text,View,Pressable,ImageBackground,} from "react-native";
+import { StyleSheet, TextInput, Text, View, Pressable, ImageBackground, ActivityIndicator, ActivityIndicatorBase, TouchableOpacity, } from "react-native";
 import React, { useState } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import images from "@/assets/images/images";
@@ -6,35 +6,55 @@ import { login } from "@/res/Api";
 
 const Index = () => {
   const nav = useRouter();
-  const [userName, setUserName] = useState("052");
-  const [password, setPassword] = useState("052222");
+  const [userName, setUserName] = useState("m7md");
+  const [password, setPassword] = useState("mmmmmmmm");
+  const [loading, setLoading] = useState(false);
 
 
   const handleLogin = async () => {
+    setLoading(true)
+    console.log("btn pressed", loading);
+
     if (!userName || !password) {
       alert("Opps!!");
       return;
     }
 
     const body = {
-      phone:userName,
+      userName: userName,
       password,
     };
 
-  login(body)
-  .then((Response)=>{
-    if(Response.success==true)
-    {
-      nav.navigate('Splash')
-    }
-    else{
-      alert('alssma 8lt')
-    }
-  })
+    login(body)
+      .then((Response) => {
+        setLoading(false)
+        if (Response.success == true) {
+          nav.navigate('home')
+        }
+        else {
+          alert('alssma 8lt')
+        }
+      }).catch((error) => {
+        console.error("error", error);
+      })
   }
   const pressRegister = () => {
     nav.navigate("register");
   };
+  const pressChangePassword = () => {
+    nav.navigate("changePassword")
+  };
+
+  console.log("Loading ", loading)
+
+  // if (loading) {
+  //   return (
+  //     <View>
+  //       <ActivityIndicator size="large" color="blue" />
+  //       <Text>Loading...</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <ImageBackground source={images.background} style={styles.background}>
@@ -59,7 +79,7 @@ const Index = () => {
             style={styles.input}
             onChangeText={setPassword}
             value={password}
-            placeholder="סיסמה"
+            placeholder="Password"
             placeholderTextColor={"#888"}
             secureTextEntry={true}
             textAlign="right"
@@ -70,11 +90,13 @@ const Index = () => {
           <Text style={styles.linkText}> Create New Account! </Text>
         </Pressable>
 
-        <Text style={styles.linkText}> Change You Password </Text>
-
-        <Pressable onPress={handleLogin}  style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Sign In</Text>
+        <Pressable onPress={pressChangePassword}>
+          <Text style={styles.linkText}> Change You Password </Text>
         </Pressable>
+
+        <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>Sign In</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

@@ -1,4 +1,4 @@
-export const baseurl = "https://ahmad-server.onrender.com";
+export const baseUrl = "https://mohamad-server.onrender.com"
 
 export const login = async (body) => {
   const url = "/login";
