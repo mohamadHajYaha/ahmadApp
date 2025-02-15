@@ -1,36 +1,35 @@
 import {
   ScrollView,
-  ScrollViewComponent,
-  Image,
   StyleSheet,
   View,
   Text,
-  Touchable,
-  TouchableOpacity,
-  TextInput,
   Pressable,
   Modal,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import Product2 from "@/components/Product2";
-import { useNavigation } from "expo-router";
-// import { data } from "@/Data/data";
 import datas from "@/Data/datacards";
 import Ahmad from "@/components/Menuheader";
-
 import Knabay from "@/components/Knabay";
 import Swardata from "@/Data/Swardata";
 import Swar from "@/components/Swar";
 import { BlurView } from "expo-blur";
 import { findAllProduct } from "@/res/Api";
+import CustomAlert from "../components/CustomAlert";
+
 const Home = () => {
   const nav = useNavigation();
   const [show, setShow] = useState(false);
   const [data, setdata] = useState([]);
-
   const [ismodalOpen, setsModalOpen] = useState<any>(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [language, setLanguage] = useState('en');
 
   const profile = ["red", "green", "blue", "yellow", "black", "Pink"];
   const [pColor, setPColor] = useState(profile);
@@ -42,31 +41,21 @@ const Home = () => {
 
   const renderAllProduct = () => {
     console.log("render data", data.length);
-    console.log("");
-    return data.map((item) => {
-      console.log("item", item.name);
-      return (
-        <Product2 props={item} />
-      )
-      
-    });
-
-    // return data?.map((item, index) => (
-    //   <View key={index}>
-    //     <Product2
-    //       props={item}
-    //       // ismodalOpen={ismodalOpen}
-    //       // setsModalOpen={setsModalOpen}
-    //     />
-    //   </View>
-    // ));
+    return data.map((item, index) => (
+      <View key={index}>
+        <Product2 props={item} ismodalOpen={ismodalOpen} setsModalOpen={setsModalOpen} />
+      </View>
+    ));
   };
+
   const aaa = () => {
     return datas.map((item, index) => <Ahmad key={index} props={item} />);
   };
+
   const rederIcon = () => {
     // return Knabaydata.map((item, index) => <Knabay key={index} props={item} />);
   };
+
   const renderswar = () => {
     return Swardata.map((item, index) => <Swar key={index} props={item} />);
   };
@@ -78,8 +67,13 @@ const Home = () => {
   const openDrawer5 = () => {
     // nav.openDrawer()
   };
+
   const gotolog = () => {
     nav.navigate("register");
+  };
+
+  const goToSettings = () => {
+    nav.navigate("Settings", { language, setLanguage });
   };
 
   const getAlldata = () => {
@@ -88,7 +82,8 @@ const Home = () => {
         console.log("data", res.data);
         setdata(res.data);
       } else {
-        alert("no data");
+        setAlertMessage("No data available");
+        setAlertVisible(true);
       }
     });
   };
@@ -108,30 +103,29 @@ const Home = () => {
               size={40}
               color={"white"}
             />
-            <Text style={styles.T}> מכשירי חשמל</Text>
+            <Text style={styles.T}> {language === 'ar' ? 'مجهزة كهربائية' : 'Electrical Appliances'} </Text>
             <Text></Text>
             <Pressable></Pressable>
-            {/* <Pressable onPress={GoToCart} >
-        <Ionicons name='cart-outline' size={50} color={"black"}/>
-        </Pressable> */}
           </View>
 
           <ScrollView horizontal>{aaa()}</ScrollView>
-
           <ScrollView horizontal>{renderswar()}</ScrollView>
-
-          <ScrollView horizontal>{rederIcon()}</ScrollView>
           {renderAllProduct()}
         </View>
       </ScrollView>
 
-      {/* Modal */}
+      <CustomAlert
+        visible={alertVisible}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
+
       <Modal
         animationType="slide"
         transparent={true}
         visible={show}
         onRequestClose={() => {
-          // setShow(!show);
+          setShow(!show);
         }}
       >
         <BlurView intensity={50} style={styles.modaContiner}>
@@ -164,18 +158,23 @@ const Home = () => {
           </Pressable>
         </BlurView>
       </Modal>
+
+      <TouchableOpacity onPress={goToSettings} style={styles.settingsButton}>
+        <Text style={styles.settingsButtonText}>Settings</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
 export default Home;
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     backgroundColor: "white",
+    flex: 1,
   },
   exit: {
-    // marginTop: 250,
     fontSize: 30,
     color: "red",
     textAlign: "center",
@@ -190,10 +189,8 @@ const styles = StyleSheet.create({
   },
   T: {
     fontSize: 30,
-    // margin: 'auto',
     color: "white",
     left: 10,
-    // marginLeft: 100,
     textAlign: "center",
   },
   MenuHeaderTop: {
@@ -217,10 +214,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    // alignItems: 'center',
-    shadowColor: "#000",
     width: 300,
     height: 650,
+    shadowColor: "#000",
     shadowOffset: {
       width: 10,
       height: 10,
@@ -239,9 +235,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: "center",
   },
-
   modaContiner: {
     flex: 1,
   },
   input: { borderWidth: 1, borderRadius: 10 },
+  settingsButton: {
+    backgroundColor: "gray",
+    borderRadius: 10,
+    marginTop: 20,
+    paddingVertical: 15,
+    alignItems: "center",
+  },
+  settingsButtonText: {
+    color: "white",
+    fontSize: 18,
+  },
 });

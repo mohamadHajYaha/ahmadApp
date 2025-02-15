@@ -29,7 +29,7 @@ export const UpdateUser = async (body) => {
 
 
 export const fetchApi = async (route, method, body) => {
-  const url = baseurl + route;
+  const url = baseUrl + route;
   try {
     const response = await fetch(url, {
       method: method || "GET",

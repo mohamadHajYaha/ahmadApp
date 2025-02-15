@@ -3,7 +3,13 @@ import React from "react";
 import Product from "./Product";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 
-const Product2 = ({ props }): any => {
+type Props = {
+  props: any;
+  ismodalOpen: any;
+  setsModalOpen: React.Dispatch<any>;
+};
+
+const Product2 = ({ props, ismodalOpen, setsModalOpen }): any => {
   const { name, data: items } = props;
   const data = useLocalSearchParams();
   const nav = useNavigation();
@@ -11,11 +17,12 @@ const Product2 = ({ props }): any => {
     nav.navigate("Screen5");
   };
 
-  console.log("items", items);
+  console.log("itemss", items);
   
   console.log("data", data);
   console.log("props data", props);
-
+  console.log("props data", props);
+  
   const renderItems = () => {
     return (
       <Product props={props} />
