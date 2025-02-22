@@ -108,9 +108,9 @@ const Home = () => {
             <Pressable></Pressable>
           </View>
 
-          <ScrollView horizontal>{aaa()}</ScrollView>
-          <ScrollView horizontal>{renderswar()}</ScrollView>
-          {renderAllProduct()}
+          {/* <ScrollView horizontal>{aaa()}</ScrollView> */}
+          {/* <ScrollView horizontal>{renderswar()}</ScrollView> */}
+          {/* {renderAllProduct()} */}
         </View>
       </ScrollView>
 
