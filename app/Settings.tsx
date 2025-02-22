@@ -1,48 +1,63 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  Modal,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import Product2 from "@/components/Product2";
+import datas from "@/Data/datacards";
+import Ahmad from "@/components/Menuheader";
+import Knabay from "@/components/Knabay";
+import Swardata from "@/Data/Swardata";
+import Swar from "@/components/Swar";
+import { BlurView } from "expo-blur";
+import { findAllProduct } from "@/res/Api";
+import CustomAlert from "../components/CustomAlert";
+import { router, useRouter } from "expo-router";
 
-const Settings = ({ route }) => {
-  const { language, setLanguage } = route.params;
-
-  const toggleLanguage = () => {
-    setLanguage(prevLanguage => (prevLanguage === 'en' ? 'ar' : 'en'));
-  };
-
+const Settings = () => {
+    const nav = useRouter();
+  const exit =() => {
+    nav.push('home')
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
-      <TouchableOpacity onPress={toggleLanguage} style={styles.languageButton}>
-        <Text style={styles.languageButtonText}>
-          {language === 'ar' ? 'تغيير اللغة إلى الإنجليزية' : 'Change Language to Arabic'}
-        </Text>
-      </TouchableOpacity>
+      <Text style={styles.text} >Settings</Text>
+      <Pressable onPress={exit} style={styles.exit}>
+        <Text>Exit</Text>
+        </Pressable>
     </View>
   );
 };
 
-export default Settings;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
-  title: {
-    fontSize: 28,
+  text: {
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 20,
+marginTop: 40,
+    textAlign: 'center',
   },
-  languageButton: {
-    backgroundColor: 'gray',
+  exit: {
+    marginTop: 40,
+    padding: 10,
+    backgroundColor: 'red',
     borderRadius: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    width: 100,
     alignItems: 'center',
-  },
-  languageButtonText: {
-    color: 'white',
-    fontSize: 18,
+    marginLeft: 150,
   },
 });
+
+export default Settings;

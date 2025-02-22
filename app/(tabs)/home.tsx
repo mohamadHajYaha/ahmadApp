@@ -73,7 +73,7 @@ const Home = () => {
   };
 
   const goToSettings = () => {
-    nav.navigate("Settings", { language, setLanguage });
+    nav.navigate("Settings", {language, setLanguage});
   };
 
   const getAlldata = () => {
