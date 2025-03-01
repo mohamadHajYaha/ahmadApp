@@ -24,22 +24,28 @@ const Register = () => {
   const handlePress = () => {
     setLoad(true);
     const body = {
-      userName,
-      email,
-      phone,
-      password,
+      userName: userName,
+      password: password,
+      email: email,
+      phone: phone,
+
     };
+
     createUser(body)
       .then((Response) => {
+
         if (Response.success == true) {
-          nav.navigate("Splash");
+          nav.navigate('home');
         } else {
-          console.log("Response", );
-          alert(Response?.message)
+          console.log(Response);
+          alert('error');
+          setLoad(false);
         }
       })
-      .finally(() => {
+      .catch((error) => {
+        console.error('error', error);
         setLoad(false);
+
       });
   };
 
@@ -53,11 +59,11 @@ const Register = () => {
       <View style={styles.inputContainer}>
 
 
-  
-<Pressable style={styles.back} onPress={() => nav.navigate("index")} style={styles.homeButton}>
-<Ionicons name="arrow-back-circle-sharp" size={45} color="#0494a5" />
 
-      </Pressable>
+        <Pressable style={styles.back} onPress={handlePress} style={styles.homeButton}>
+          <Ionicons name="arrow-back-circle-sharp" size={45} color="#0494a5" />
+
+        </Pressable>
 
 
         <TextInput
@@ -99,7 +105,7 @@ const Register = () => {
               <Text style={styles.buttonText}>Register</Text>
             </>
           )}
-          
+
         </Pressable>
       </View>
     </ScrollView>
@@ -107,8 +113,8 @@ const Register = () => {
 };
 
 const styles = StyleSheet.create({
-  back:{
-alignContent:'flex-start'
+  back: {
+    alignContent: 'flex-start'
 
   },
   container: {

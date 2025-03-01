@@ -26,6 +26,10 @@ export const UpdateUser = async (body) => {
 
 }
 
+export const getAllProducts = async () => {
+  const url = "/GetAllPorducts";  // Get all products endpoint
+  return await fetchApi(url, 'GET');  // No body needed for GET request
+};
 
 
 export const fetchApi = async (route, method, body) => {

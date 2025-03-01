@@ -18,10 +18,34 @@ import Knabay from "@/components/Knabay";
 import Swardata from "@/Data/Swardata";
 import Swar from "@/components/Swar";
 import { BlurView } from "expo-blur";
-import { findAllProduct } from "@/res/Api";
+import { findAllProduct, getAllProducts } from "@/res/Api";
 import CustomAlert from "../components/CustomAlert";
+import Product from "@/components/Product";
+import PC from "@/components/porductPC";
+import alertVisible from "../components/CustomAlert";
+import alertMessage from "../components/CustomAlert";
+import goToSettings from "../components/CustomAlert";
 
 const Home = () => {
+  const [products, setProducts] = useState([]);  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getAllProducts();  
+        console.log(response);  
+        setProducts(response.data || []);  
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
+    };
+
+    fetchProducts();  
+  }, []); 
+
+  const renderCard=()=>{
+
+
+  
   const nav = useNavigation();
   const [show, setShow] = useState(false);
   const [data, setdata] = useState([]);
@@ -39,58 +63,29 @@ const Home = () => {
     setate(state + 1);
   };
 
-  const renderAllProduct = () => {
-    console.log("render data", data.length);
-    return data.map((item, index) => (
-      <View key={index}>
-        <Product2 props={item} ismodalOpen={ismodalOpen} setsModalOpen={setsModalOpen} />
-      </View>
-    ));
-  };
 
-  const aaa = () => {
-    return datas.map((item, index) => <Ahmad key={index} props={item} />);
-  };
 
-  const rederIcon = () => {
-    // return Knabaydata.map((item, index) => <Knabay key={index} props={item} />);
-  };
+  
 
-  const renderswar = () => {
-    return Swardata.map((item, index) => <Swar key={index} props={item} />);
-  };
+ 
 
   const GoToCart = () => {
     nav.navigate("CartScreen");
   };
 
-  const openDrawer5 = () => {
-    // nav.openDrawer()
-  };
 
-  const gotolog = () => {
-    nav.navigate("register");
-  };
+
 
   const goToSettings = () => {
     nav.navigate("Settings", {language, setLanguage});
   };
 
-  const getAlldata = () => {
-    findAllProduct().then((res) => {
-      if (res?.data?.length) {
-        console.log("data", res.data);
-        setdata(res.data);
-      } else {
-        setAlertMessage("No data available");
-        setAlertVisible(true);
-      }
-    });
-  };
+   
 
-  useEffect(() => {
-    getAlldata();
-  }, []);
+  
+}
+    
+ 
 
   return (
     <View style={styles.container}>
@@ -103,15 +98,14 @@ const Home = () => {
               size={40}
               color={"white"}
             />
-            <Text style={styles.T}> {language === 'ar' ? 'مجهزة كهربائية' : 'Electrical Appliances'} </Text>
-            <Text></Text>
-            <Pressable></Pressable>
+     <Text style={styles.name}>Computer Ahmad</Text>
           </View>
-
           {/* <ScrollView horizontal>{aaa()}</ScrollView> */}
           {/* <ScrollView horizontal>{renderswar()}</ScrollView> */}
           {/* {renderAllProduct()} */}
         </View>
+        <PC name="Ahmad" price="1000" img='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3jvi0a00NEFKjmGP4_cDuvxysU204q9RBgA&s' />
+
       </ScrollView>
 
       <CustomAlert
@@ -120,47 +114,10 @@ const Home = () => {
         onClose={() => setAlertVisible(false)}
       />
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={show}
-        onRequestClose={() => {
-          setShow(!show);
-        }}
-      >
-        <BlurView intensity={50} style={styles.modaContiner}>
-          <Pressable onPress={() => setShow(false)} style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.test}>profile</Text>
-              <Pressable
-                onPress={() => {
-                  changeColor();
-                  setPColor(pColor[state]);
-                }}
-              >
-                <Ionicons
-                  style={styles.icon}
-                  name="person-circle-outline"
-                  size={60}
-                  color={pColor}
-                />
-              </Pressable>
-              <Text style={styles.welcom}>Welcome </Text>
-              <TextInput style={styles.user} placeholder="userName" />
-              <TextInput style={styles.user} placeholder="email" />
-              <TextInput style={styles.user} placeholder="password" />
-              <TextInput style={styles.user} placeholder="age" />
-
-              <Pressable onPress={gotolog}>
-                <Text style={styles.exit}>exit acount</Text>
-              </Pressable>
-            </View>
-          </Pressable>
-        </BlurView>
-      </Modal>
 
       <TouchableOpacity onPress={goToSettings} style={styles.settingsButton}>
         <Text style={styles.settingsButtonText}>Settings</Text>
+
       </TouchableOpacity>
     </View>
   );
@@ -169,6 +126,17 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  name:{
+    fontSize: 20,
+    color: "white",
+    left: 10,
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    textAlignVertical: "center",
+  },
   container: {
     marginTop: 40,
     backgroundColor: "white",
@@ -187,12 +155,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
   },
-  T: {
-    fontSize: 30,
-    color: "white",
-    left: 10,
-    textAlign: "center",
-  },
+
   MenuHeaderTop: {
     flexDirection: "row",
     justifyContent: "space-around",
