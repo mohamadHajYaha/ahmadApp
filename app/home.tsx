@@ -15,6 +15,19 @@ const Home = () => {
 
   const toggleSwitch = () => setIsDarkMode(previousState => !previousState);
 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEditMode = () => {
+    setIsEditing(prev => !prev);
+  };
+
+  const handleRemoveItem = (id: string) => {
+    const updatedProducts = products.filter(product => product._id !== id);
+    setProducts(updatedProducts);
+    setFilteredProducts(updatedProducts);
+  };
+
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -57,11 +70,25 @@ const Home = () => {
 
   const renderCard = () => {
     return filteredProducts.map((item: any) => (
-      <TouchableOpacity key={item._id} onPress={() => Nav.navigate('Screen2', { ...item })}>
-        <PC price={item.price} name={item.name} img={item.img} type={item.type}/>
-      </TouchableOpacity>
+      <View key={item._id} style={{ position: 'relative' }}>
+        {isEditing && (
+          <TouchableOpacity
+            onPress={() => handleRemoveItem(item._id)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteButtonText}>✖</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          disabled={isEditing} // disable navigation when editing
+          onPress={() => Nav.navigate('Screen2', { ...item })}
+        >
+          <PC price={item.price} name={item.name} img={item.img} type={item.type} />
+        </TouchableOpacity>
+      </View>
     ));
   };
+
 
   const RenderFilter = () => {
     const filters = ["PC", "GPU", "CPU", "MotherBoard", "GIFTCARD", "Video Games", "Laptop", "Mobile", "Tablet", "Accessories"];
@@ -83,12 +110,19 @@ const Home = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor:'white' }]}>
+    <View style={[styles.container, { backgroundColor: 'white' }]}>
       <View style={styles.header}>
         <Text style={[styles.stortName, { color: 'black' }]}>Store</Text>
-        <TouchableOpacity onPress={() => Nav.navigate('Settings')}>
-          <Text style={{ fontSize: 16, color: '#007AFF', fontWeight: '600' }}>Settings</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={toggleEditMode} style={{ marginRight: 10 }}>
+            <Text style={{ fontSize: 16, color: '#FF3B30', fontWeight: '600' }}>
+              {isEditing ? 'Done' : 'Edit'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Nav.navigate('Settings')}>
+            <Text style={{ fontSize: 16, color: '#007AFF', fontWeight: '600' }}>Settings</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <TextInput

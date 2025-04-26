@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { CreditCardInput } from 'react-native-credit-card-input'
 
 const Screen3 = () => {
   return (
-    <View>
-      <Text>Screen3</Text>
-    </View>
+<CreditCardInput style={{marginTop:100}}/>
+
   )
 }
 
