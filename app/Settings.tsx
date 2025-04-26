@@ -1,63 +1,76 @@
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  Modal,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import Product2 from "@/components/Product2";
-import datas from "@/Data/datacards";
-import Ahmad from "@/components/Menuheader";
-import Knabay from "@/components/Knabay";
-import Swardata from "@/Data/Swardata";
-import Swar from "@/components/Swar";
-import { BlurView } from "expo-blur";
-import { findAllProduct } from "@/res/Api";
-import CustomAlert from "../components/CustomAlert";
-import { router, useRouter } from "expo-router";
+import { useNavigation } from 'expo-router';
+import React, { useState } from 'react';
+import { View, Text, Switch, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
-const Settings = () => {
-    const nav = useRouter();
-  const exit =() => {
-    nav.push('home')
-  }
+
+const SettingsScreen = () => {
+  const navigation = useNavigation();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+  const toggleDarkMode = () => setIsDarkMode(previous => !previous);
+  const toggleNotifications = () => setNotificationsEnabled(previous => !previous);
+
+
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Logout', onPress: () => console.log('User logged out') },
+    ]);
+  };
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text} >Settings</Text>
-      <Pressable onPress={exit} style={styles.exit}>
-        <Text>Exit</Text>
-        </Pressable>
+      <Text style={styles.header}>Settings</Text>
+
+      <View style={styles.settingItem}>
+        <Text style={styles.label}>Dark Mode</Text>
+        <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
+      </View>
+
+      <View style={styles.settingItem}>
+        <Text style={styles.label}>Notifications</Text>
+        <Switch value={notificationsEnabled} onValueChange={toggleNotifications} />
+      </View>
+
+      <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('ProfileScreen')}>
+        <Text style={styles.label}>Edit Profile</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('CreateProduct')}>
+        <Text style={styles.label}>Create Product</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.settingItem} onPress={handleLogout}>
+        <Text style={[styles.label, { color: 'red' }]}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+export default SettingsScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
   },
-  text: {
-    fontSize: 30,
+  header: {
+    fontSize: 24,
+    marginBottom: 20,
     fontWeight: 'bold',
-marginTop: 40,
-    textAlign: 'center',
   },
-  exit: {
-    marginTop: 40,
-    padding: 10,
-    backgroundColor: 'red',
-    borderRadius: 10,
-    width: 100,
+  settingItem: {
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: 150,
+  },
+  label: {
+    fontSize: 16,
   },
 });
-
-export default Settings;

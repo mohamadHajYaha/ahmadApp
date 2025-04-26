@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { createUser, login } from "@/res/Api";
 
 const Register = () => {
@@ -35,7 +35,7 @@ const Register = () => {
       .then((Response) => {
 
         if (Response.success == true) {
-          nav.navigate('home');
+          router.replace("/home")
         } else {
           console.log(Response);
           alert('error');
@@ -52,6 +52,8 @@ const Register = () => {
   // const pressRegister = () => {
   //     nav.
   //   };
+  // const backtoHome = () => {
+  //   nav.navigate("index");
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

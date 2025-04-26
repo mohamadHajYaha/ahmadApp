@@ -6,34 +6,23 @@ import { Ionicons } from "@expo/vector-icons";
 const _layout = () => {
   return (
     <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen
-        name="home"
-        options={{
-          tabBarIcon: (focused) => {
-            return (
-              <Ionicons
-                name="home"
-                size={30}
-                color={focused.focused ? "#0F0E0E" : "#515585"}
-              />
-            );
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="cart"
-        options={{
-          tabBarIcon: (focused) => {
-            return (
-              <Ionicons
-                name="cart"
-                size={30}
-                color={focused.focused ? "#0F0E0E" : "#515585"}
-              />
-            );
-          },
-        }}
-      />
+     
+     
+      <Tabs.Screen options={{
+        href: null
+      }} name="changePassword" />
+      <Tabs.Screen options={{
+        href: null
+      }} name="changePassword1" />
+      <Tabs.Screen options={{
+        href: null
+      }} name="cart" />
+       <Tabs.Screen options={{
+        href: null
+      }} name="Settings" />
+       <Tabs.Screen options={{
+        href: null
+      }} name="home" />
     </Tabs>
   );
 };

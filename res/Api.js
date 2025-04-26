@@ -2,34 +2,39 @@ export const baseUrl = "https://mohamad-server.onrender.com"
 
 export const login = async (body) => {
   const url = "/login";
-  return await fetchApi(url, "POST",  body );
+  return await fetchApi(url, "POST", body);
 };
 
 export const createUser = async (body) => {
   const url = "/createUser";
-  console.log('body is', {body});
-  
+  console.log('body is', { body });
+
   return await fetchApi(url, "POST", body);
 };
 export const findAllProduct = async (body) => {
   const url = "/findAllProduct";
-  console.log ('body is' , body);
+  console.log('body is', body);
 
-  return await fetchApi(url , "POST" , body); 
+  return await fetchApi(url, "POST", body);
 
 }
 export const UpdateUser = async (body) => {
   const url = "/UpdateUser";
-  console.log ('body is' , body);
+  console.log('body is', body);
 
-  return await fetchApi(url , "POST" , body); 
+  return await fetchApi(url, "POST", body);
 
 }
 
 export const getAllProducts = async () => {
-  const url = "/GetAllPorducts";  // Get all products endpoint
-  return await fetchApi(url, 'GET');  // No body needed for GET request
+  const url = "/GetAllPorducts";
+  return await fetchApi(url, 'GET');
 };
+
+export const createproducts = (body) => {
+  const url = "/createproducts"
+  return fetchApi(url, "POST", body)
+}
 
 
 export const fetchApi = async (route, method, body) => {

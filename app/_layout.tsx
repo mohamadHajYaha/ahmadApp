@@ -20,7 +20,8 @@ export default function RootLayout() {
     <StoreProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="(tabs)" />
+        {/* <Stack.Screen name="(tabs)" /> */}
+        
       </Stack>
     </StoreProvider>
   );
